@@ -1,0 +1,14 @@
+#main{
+    background-image: url("./assests/main_bg.png");
+    background-size: cover;
+    height: 929px;
+    width: auto;
+}
+#section1{
+    background-image: url("./assests/Rectangle 1.png");
+    background-size: cover;
+}
+#section2{
+    background-image: url("./assests/Rectangle 2.png");
+    background-size: cover;
+}
