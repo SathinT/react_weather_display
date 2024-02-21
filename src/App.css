@@ -12,3 +12,11 @@
     background-image: url("./assests/Rectangle 2.png");
     background-size: cover;
 }
+.Toastify__progress-bar {
+    background: red !important;
+}
+.Toastify__toast-body {
+    color: red;
+}
+
+

@@ -1,15 +1,19 @@
 import React, {useState} from 'react';
 import "../src/App.css"
 import  search  from '../src/assests/search button.png'
-import  cloudy  from '../src/assests/clouds.png'
 
-// import  maxT  from '../src/assests/Thermometer Up.png'
-// import  minT  from '../src/assests/Thermometer Down.png'
-// import  Humidity  from '../src/assests/humidity.png'
-// import  Wind  from '../src/assests/wind.png'
-// import  Pressure  from '../src/assests/Atmospheric Pressure.png'
+import  cloudy  from '../src/assests/clouds.png'
+import  clear  from '../src/assests/clear.png'
+import  drizzle  from '../src/assests/drizzle.png'
+import  mist  from '../src/assests/mist.png'
+import  rain  from '../src/assests/rain.png'
+import  snow  from '../src/assests/snow.png'
+
 import {SubWeather} from "./view/SubWeather/SubWeather";
 import axios from "axios";
+
+import {ToastContainer, toast, Bounce} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function getDate() {
     const today = new Date();
@@ -59,16 +63,58 @@ function App() {
                 .then((response) => {
                     setData(response.data);
                     console.log(response.data);
+                })
+                .catch((error) => {
+                    {notify()}
                 });
         }
     }
 
 
 
-    const image = "https://openweathermap.org/img/wn/"+data?.weather["0"].icon+"@4x.png"
+    // const image = "https://openweathermap.org/img/wn/"+data?.weather["0"].icon+"@4x.png"
+
+    let weatherIconSrc;
+    if(data?.weather[0].main === "Clouds"){
+        weatherIconSrc = cloudy;
+    }
+    else if(data?.weather[0].main === "Clear"){
+        weatherIconSrc = clear;
+    }
+    else if(data?.weather[0].main === "Rain"){
+        weatherIconSrc = rain;
+    }
+    else if(data?.weather[0].main === "Drizzle"){
+        weatherIconSrc = drizzle;
+    }
+    else if(data?.weather[0].main === "Mist"){
+        weatherIconSrc = mist;
+    }
+    else if(data?.weather[0].main === "Snow"){
+        weatherIconSrc = snow;
+    }
+
+    const notify = () => toast.error("Check the city name and try again!")
+
   return (
    <>
    <div id="main" className="flex-none md:flex">
+       <ToastContainer
+           toastStyle={{ width:'100%', height:'100%'}}
+
+           position="top-center"
+           autoClose={5000}
+           hideProgressBar={false}
+           newestOnTop={false}
+           closeOnClick
+           rtl={false}
+           pauseOnFocusLoss
+           draggable
+           pauseOnHover
+           theme="light"
+           transition = {Bounce}
+           // className="bg-transparent border-orange-500 border-2 rounded-2xl"
+           />
 
        <div id="section1" className="
        w-full h-4/6 flex-col justify-between
@@ -77,15 +123,15 @@ function App() {
            <div className="pt-14">
          <div className="
          flex w-64 h-10 mx-20 rounded-2xl bg-white opacity-80
-         md:w-48 md:ml-[110%]
+         md:w-56 md:ml-[110%]
          lg:w-80">
              <input placeholder="Search City..."
                     className="bg-transparent outline-none w-52 pl-3"
                     value={location} onChange={(event) => setLocation(event.target.value)}
                     onKeyDownCapture={searchBtn}></input>
              <button>
-             <img className="md:-ml-10
-             lg:ml-20" src={search}/>
+             <img className="md:ml-2 md:w-24 md:h-10
+             lg:ml-20 lg:w-12 lg:h-10" src={search}/>
              </button>
          </div>
 
@@ -93,7 +139,7 @@ function App() {
                text-center pt-5
                lg:text-left lg:pl-72">
                <h1 className="text-white text-3xl font-bold">{currentDate}</h1>
-               <h1 className="text-white text-5xl font-bold lg:text-4xl">Monday</h1>
+               <h1 className="text-white text-5xl font-bold lg:text-4xl">Wednesday</h1>
                </div>
 
                <div className="mx-32
@@ -102,7 +148,7 @@ function App() {
                    <img className="
                    h-40
                    md:h-56 md:w-72
-                   lg:h-40 lg:w-40 lg:ml-16" src={image}/>
+                   lg:h-40 lg:w-40 lg:ml-16" src={weatherIconSrc}/>
                    <h1 className="
                    text-4xl text-orange-600 font-bold text-center -mt-5
                    lg:text-left lg:ml-24">{data?.weather["0"].main}</h1>
